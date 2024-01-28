@@ -71,7 +71,7 @@ export default YourComponent;
 - `caseSensitive` : Boolean indicating whether the search should be case-sensitive.
 - `debounceTime` : Time in milliseconds for debounce (optional).
 
-## Usage 2
+## Example
 
 ```
 import {
