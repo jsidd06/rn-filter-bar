@@ -60,21 +60,17 @@ const Home = () => {
 
   return (
     <View style={styles.ctn}>
-      <RnFilterBar setShowData={setShowData} data={data} />
+      <RnFilterBar setFilterData={setShowData} data={data} />
       <ScrollView>
-        {showData.length > 0 ? (
-          showData.map((d: any) => (
-            <View key={d.id} style={styles.mapCtn}>
-              <Pressable
-                onPress={() => selectedHandler(d.name)}
-                style={styles.btn}>
-                <Text>{d.name}</Text>
-              </Pressable>
-            </View>
-          ))
-        ) : (
-          <Text>No Search found</Text>
-        )}
+        {showData.map((d: any) => (
+          <View key={d.id} style={styles.mapCtn}>
+            <Pressable
+              onPress={() => selectedHandler(d.name)}
+              style={styles.btn}>
+              <Text>{d.name}</Text>
+            </Pressable>
+          </View>
+        ))}
       </ScrollView>
     </View>
   );

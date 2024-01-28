@@ -2,17 +2,23 @@ import {StyleSheet, Text, TextInput, View} from 'react-native';
 import React, {useEffect} from 'react';
 
 type RnFilterBarProps = {
-  setShowData?: any;
+  setFilterData?: any;
   data?: any;
 };
 
-const RnFilterBar = ({setShowData, data}: RnFilterBarProps) => {
+const RnFilterBar = ({setFilterData, data}: RnFilterBarProps) => {
   useEffect(() => {
-    setShowData(data);
-  }, [data, setShowData]);
+    setFilterData(data);
+  }, [data, setFilterData]);
   const handlerSubmit = (text: any) => {
-    const d = data.filter((i: any) => i.name === text.toLowerCase());
-    setShowData(d);
+    if (text.trim() === '') {
+      setFilterData(data);
+    } else {
+      const filteredData = data.filter(
+        (i: any) => i.name === text.toLowerCase(),
+      );
+      setFilterData(filteredData);
+    }
   };
 
   return (
