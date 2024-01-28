@@ -11,7 +11,7 @@ import RnFilterBar from '../components';
 const data: any = [
   {
     id: Math.random().toLocaleString(),
-    name: 'animal',
+    name: 'Animal',
   },
   {
     id: Math.random().toLocaleString(),

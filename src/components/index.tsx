@@ -1,33 +1,54 @@
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {StyleSheet, TextInput, View} from 'react-native';
 import React, {useEffect} from 'react';
 
 type RnFilterBarProps = {
   setFilterData?: any;
   data?: any;
+  containerStyle?: any;
+  inputStyle?: any;
+  placeholderName?: string;
+  placeholderColor?: any;
+  caseSensitive?: boolean;
+  debounceTime?: number;
 };
 
-const RnFilterBar = ({setFilterData, data}: RnFilterBarProps) => {
+const RnFilterBar = ({
+  setFilterData,
+  data,
+  inputStyle,
+  containerStyle,
+  placeholderName,
+  placeholderColor,
+  caseSensitive = false,
+  debounceTime = 0,
+}: RnFilterBarProps) => {
   useEffect(() => {
     setFilterData(data);
   }, [data, setFilterData]);
+
   const handlerSubmit = (text: any) => {
-    if (text.trim() === '') {
-      setFilterData(data);
+    if (debounceTime > 0) {
+      setTimeout(() => filterData(text), debounceTime);
     } else {
-      const filteredData = data.filter(
-        (i: any) => i.name === text.toLowerCase(),
-      );
-      setFilterData(filteredData);
+      filterData(text);
     }
   };
 
+  const filterData = (text: string) => {
+    const filteredData = data.filter((item: any) =>
+      caseSensitive
+        ? item.name.includes(text)
+        : item.name.toLowerCase().includes(text.toLowerCase()),
+    );
+    setFilterData(filteredData);
+  };
+
   return (
-    <View>
-      <Text>RnFilterBar</Text>
+    <View style={[containerStyle]}>
       <TextInput
-        style={styles.input}
-        placeholder="Search.."
-        placeholderTextColor="#000"
+        style={[styles.input, inputStyle]}
+        placeholder={placeholderName || 'Search...'}
+        placeholderTextColor={placeholderColor || '#000'}
         onChangeText={text => handlerSubmit(text)}
       />
     </View>
