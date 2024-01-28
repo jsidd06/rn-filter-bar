@@ -6,7 +6,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import RnFilterBar from '../components';
 const data: any = [
   {
@@ -46,11 +46,18 @@ const data: any = [
 const Home = () => {
   const [showData, setShowData] = useState([]);
   const [selectedData, setSelectedData] = useState<any>([]);
-  const selectedHandler = (select: any) => {
-    setSelectedData((prev: any) => [...prev, select]);
+  useEffect(() => {
     console.log('check==>', selectedData);
+  }, [selectedData]);
+
+  const selectedHandler = (select: any) => {
+    setSelectedData((prev: any) => {
+      const sData = [...prev, select];
+      return sData;
+    });
     setShowData([]);
   };
+
   return (
     <View style={styles.ctn}>
       <RnFilterBar setShowData={setShowData} data={data} />
