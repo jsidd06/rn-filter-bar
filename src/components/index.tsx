@@ -1,5 +1,5 @@
 import {Image, Pressable, StyleSheet, TextInput, View} from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 
 type RnFilterBarProps = {
   setFilterData?: any;
@@ -36,11 +36,13 @@ const RnFilterBar = ({
   crossContainer,
   crossIcon,
 }: RnFilterBarProps) => {
+  const textInputRef = useRef<TextInput>(null);
+
   useEffect(() => {
     setFilterData(data);
   }, [data, setFilterData]);
 
-  const handlerSubmit = (text: any) => {
+  const handlerSubmit = (text: string) => {
     if (debounceTime > 0) {
       setTimeout(() => filterData(text), debounceTime);
     } else {
@@ -55,6 +57,13 @@ const RnFilterBar = ({
         : item.name.toLowerCase().includes(text.toLowerCase()),
     );
     setFilterData(filteredData);
+  };
+
+  const handleCrossPress = () => {
+    if (textInputRef.current) {
+      textInputRef.current.clear();
+      filterData('');
+    }
   };
 
   return (
@@ -72,6 +81,7 @@ const RnFilterBar = ({
             </Pressable>
           )}
           <TextInput
+            ref={textInputRef}
             style={[styles.input, inputStyle]}
             placeholder={placeholderName || 'Search...'}
             placeholderTextColor={placeholderColor || '#000'}
@@ -79,7 +89,7 @@ const RnFilterBar = ({
           />
         </View>
         {crossPress && (
-          <Pressable onPress={crossPress} style={[crossContainer]}>
+          <Pressable onPress={handleCrossPress} style={[crossContainer]}>
             <Image
               source={
                 crossIcon ? crossIcon : require('../assets/icons/cross.png')
