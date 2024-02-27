@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import RnFilterBar from 'rn-filter-bar';
+import RnFilterBar from '../components';
 const data: any = [
   {
     id: Math.random().toLocaleString(),
@@ -58,6 +58,10 @@ const Home = () => {
     setShowData([]);
   };
 
+  const handler = () => {
+    console.log('click');
+  };
+
   return (
     <View style={styles.ctn}>
       <RnFilterBar
@@ -65,6 +69,9 @@ const Home = () => {
         caseSensitive={false}
         debounceTime={300}
         data={data}
+        subContainerStyle={{borderColor: 'blue'}}
+        arrowPress={handler}
+        crossPress={handler}
       />
       <ScrollView>
         {showData.map((d: any) => (

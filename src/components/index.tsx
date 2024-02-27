@@ -1,4 +1,4 @@
-import {StyleSheet, TextInput, View} from 'react-native';
+import {Image, Pressable, StyleSheet, TextInput, View} from 'react-native';
 import React, {useEffect} from 'react';
 
 type RnFilterBarProps = {
@@ -10,6 +10,13 @@ type RnFilterBarProps = {
   placeholderColor?: any;
   caseSensitive?: boolean;
   debounceTime?: number;
+  arrowPress?: any;
+  crossPress?: any;
+  subContainerStyle?: any;
+  leftContainer?: any;
+  leftIcon?: any;
+  crossContainer?: any;
+  crossIcon?: any;
 };
 
 const RnFilterBar = ({
@@ -21,6 +28,13 @@ const RnFilterBar = ({
   placeholderColor,
   caseSensitive = false,
   debounceTime = 0,
+  arrowPress,
+  crossPress,
+  subContainerStyle,
+  leftContainer,
+  leftIcon,
+  crossContainer,
+  crossIcon,
 }: RnFilterBarProps) => {
   useEffect(() => {
     setFilterData(data);
@@ -45,12 +59,36 @@ const RnFilterBar = ({
 
   return (
     <View style={[containerStyle]}>
-      <TextInput
-        style={[styles.input, inputStyle]}
-        placeholder={placeholderName || 'Search...'}
-        placeholderTextColor={placeholderColor || '#000'}
-        onChangeText={text => handlerSubmit(text)}
-      />
+      <View style={[styles.subRootCtn, subContainerStyle]}>
+        <View style={[styles.rowRoot, leftContainer]}>
+          {arrowPress && (
+            <Pressable onPress={arrowPress}>
+              <Image
+                source={
+                  leftIcon ? leftIcon : require('../assets/icons/left.png')
+                }
+                style={styles.img}
+              />
+            </Pressable>
+          )}
+          <TextInput
+            style={[styles.input, inputStyle]}
+            placeholder={placeholderName || 'Search...'}
+            placeholderTextColor={placeholderColor || '#000'}
+            onChangeText={text => handlerSubmit(text)}
+          />
+        </View>
+        {crossPress && (
+          <Pressable onPress={crossPress} style={[crossContainer]}>
+            <Image
+              source={
+                crossIcon ? crossIcon : require('../assets/icons/cross.png')
+              }
+              style={styles.img}
+            />
+          </Pressable>
+        )}
+      </View>
     </View>
   );
 };
@@ -58,11 +96,18 @@ const RnFilterBar = ({
 export default RnFilterBar;
 
 const styles = StyleSheet.create({
-  input: {
-    marginVertical: 10,
-    padding: 10,
+  subRootCtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     borderWidth: 1,
-    borderColor: '#ccc',
+    paddingRight: 10,
+    paddingLeft: 10,
     borderRadius: 8,
   },
+  input: {
+    marginLeft: 10,
+  },
+  rowRoot: {flexDirection: 'row', alignItems: 'center'},
+  img: {width: 14, height: 14},
 });
